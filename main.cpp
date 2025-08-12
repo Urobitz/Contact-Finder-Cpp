@@ -37,6 +37,28 @@ void MenuManager(sqlite3 *db)
             continue; // Skip the rest of the loop and prompt again
         }
 
+        Contact newContact;
+
+        switch (choice)
+        {
+        case 1:
+            
+        // Add Contact  
+            std::cout << "Enter contact information: \n";
+            std::cout << "Name: ";
+            std::cin >> newContact.name;
+            std::cout << "Phone: ";
+            std::cin >> newContact.phone;
+            std::cout << "Email: ";
+            std::cin >> newContact.email;
+
+
+            break;
+        
+        default:
+            break;
+        }
+
     } while (choice != 5);
 
 }
