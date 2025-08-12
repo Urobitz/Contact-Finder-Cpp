@@ -23,6 +23,8 @@ int main()
         return 1;
     }
 
+    std::cout << "Database opened successfully." << std::endl;
+
     printTitle();
 
 }
