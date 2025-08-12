@@ -8,7 +8,6 @@ void printTitle()
     std::cout << "*********************\n"; 
 }
 
-
 int main()
 {
     sqlite3 * database_handle = nullptr;
@@ -26,5 +25,4 @@ int main()
     std::cout << "Database opened successfully." << std::endl;
 
     printTitle();
-
 }
