@@ -10,7 +10,7 @@ void printTitle()
     std::cout << "*********************\n"; 
 }
 
-void MenuManager(sqlite3 *db)
+int MenuManager(sqlite3 *db)
 {
 
     int choice = 0;
@@ -18,8 +18,8 @@ void MenuManager(sqlite3 *db)
     do
     {
         std::cout << "1. Add Contact\n";
-        std::cout << "2. View Contacts\n";
-        std::cout << "3. Search Contact\n";
+        std::cout << "2. Search Contact\n";
+        std::cout << "3. View Contact\n";
         std::cout << "4. Delete Contact\n";
         std::cout << "5. Exit\n";
 
@@ -38,26 +38,40 @@ void MenuManager(sqlite3 *db)
         }
 
         Contact newContact;
+        Contact searchContact;
 
         switch (choice)
         {
         case 1:
             
         // Add Contact  
-            std::cout << "Enter contact information: \n";
-            std::cout << "Name: ";
-            std::cin >> newContact.name;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear leftover newline
+            std::cout << "\nEnter contact information\n  ";
+            std::cout << "Full Name: ";
+            std::getline(std::cin, newContact.name);
             std::cout << "Phone: ";
             std::cin >> newContact.phone;
             std::cout << "Email: ";
             std::cin >> newContact.email;
 
-
+            addContact(newContact, db);
             break;
+
+        case 2:
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "\nEnter contact name to search: ";
+            std::getline(std::cin, searchContact.name);
+            seekContact(db, searchContact);
+            break;
+            
         
         default:
+            std::cout << "Exiting the program.\n";
+            return 0;
             break;
         }
+
+        std::cout << std::endl;
 
     } while (choice != 5);
 
@@ -80,7 +94,11 @@ int main()
     createTable(database_handle);
 
     printTitle();
-    MenuManager(database_handle);
+    while (MenuManager(database_handle) != 0)
+    {
+        MenuManager(database_handle);
+    }
+    
 
 
 
