@@ -17,9 +17,11 @@ int MenuManager(sqlite3 *db)
 
     do
     {
+        printTitle();
+
         std::cout << "1. Add Contact\n";
         std::cout << "2. Search Contact\n";
-        std::cout << "3. View Contact\n";
+        std::cout << "3. View Contacts\n";
         std::cout << "4. Delete Contact\n";
         std::cout << "5. Exit\n";
 
@@ -46,7 +48,7 @@ int MenuManager(sqlite3 *db)
             
         // Add Contact  
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear leftover newline
-            std::cout << "\nEnter contact information\n  ";
+            std::cout << "\nEnter contact information\n";
             std::cout << "Full Name: ";
             std::getline(std::cin, newContact.name);
             std::cout << "Phone: ";
@@ -62,7 +64,18 @@ int MenuManager(sqlite3 *db)
             std::cout << "\nEnter contact name to search: ";
             std::getline(std::cin, searchContact.name);
             seekContact(db, searchContact);
+            std::cout << std::endl; //for visual clarity
+            printTitle();
             break;
+
+        case 3:
+
+        std::cout << std::endl;
+        printTable(db);
+        std::cout << std::endl;
+
+        break;
+        
             
         
         default:
@@ -92,8 +105,7 @@ int main()
     }
 
     createTable(database_handle);
-
-    printTitle();
+    
     while (MenuManager(database_handle) != 0)
     {
         MenuManager(database_handle);

@@ -3,7 +3,11 @@
 #include <sqlite3.h>
 
 int createTable(sqlite3 *db) {
-    const char *sql = "DROP TABLE IF EXISTS contacts;";
+    const char *sql = "CREATE TABLE IF NOT EXISTS contacts ("
+                      "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                      "name TEXT NOT NULL, "
+                      "phone TEXT NOT NULL, "
+                      "email TEXT NOT NULL);";
 
     char *errMsg = nullptr;
     int rc = sqlite3_exec(db, sql, nullptr, nullptr, &errMsg);
@@ -63,7 +67,7 @@ int seekContact(sqlite3 *db, Contact contactToSeek)
     {
         found = true;
         std::cout << "\nContact Found:\n";
-        std::cout << "ID: " << sqlite3_column_int(stmt, 0) << "\n";
+        std::cout << "id: " << sqlite3_column_int(stmt, 0) << "\n";
         std::cout << "Name: " << sqlite3_column_text(stmt, 1) << "\n";
         std::cout << "Phone: " << sqlite3_column_text(stmt, 2) << "\n";
         std::cout << "Email: " << sqlite3_column_text(stmt, 3) << "\n";
@@ -76,10 +80,35 @@ int seekContact(sqlite3 *db, Contact contactToSeek)
 
     sqlite3_finalize(stmt);
 
+    return rc;
+}
+
+int callback(void *  unused, int col_n, char ** data, char ** col_name)
+{
+
+    for (int i = 0; i < col_n; i++)
+    {
+        std::cout << col_name[i] << ": "<< data[i] << "\n";
+    }
+
+    std::cout<<"\n";
+
     return 0;
+    
+}
 
+int printTable(sqlite3 *db)
+{
+    const char * printContent = "Select * FROM contacts";
+    sqlite3_stmt * stmt;
 
+    std::cout << "-------RESULTS-------\n";
 
+    int rc = sqlite3_exec(db, printContent, callback, nullptr, nullptr);
+
+    std::cout << "---------------------";
+
+    return rc;
 }
 
 
