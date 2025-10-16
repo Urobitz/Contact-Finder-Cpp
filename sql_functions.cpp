@@ -111,4 +111,21 @@ int printTable(sqlite3 *db)
     return rc;
 }
 
+int deleteContact(sqlite3 *db, int id)
+{
+    const char * removeContact = "DELETE FROM contacts WHERE id = ?";
+
+    sqlite3_stmt * stmt;
+
+    sqlite3_prepare_v2(db, removeContact, -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, id);
+
+    sqlite3_step(stmt);
+    
+    sqlite3_finalize(stmt);
+
+    return SQLITE_OK;
+}
+
 

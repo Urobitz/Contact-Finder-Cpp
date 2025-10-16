@@ -10,7 +10,7 @@ void printTitle()
     std::cout << "*********************\n"; 
 }
 
-int MenuManager(sqlite3 *db)
+void MenuManager(sqlite3 *db)
 {
 
     int choice = 0;
@@ -70,24 +70,35 @@ int MenuManager(sqlite3 *db)
 
         case 3:
 
-        std::cout << std::endl;
-        printTable(db);
-        std::cout << std::endl;
+        std::cout << std::endl; //for visual clarity
+        printTable(db); 
+        std::cout << std::endl; //for visual clarity
 
         break;
-        
-            
+
+        case 4:
+        {
+          unsigned int id = 0;
+
+          std::cout << std::endl;
+
+          std::cout << "Enter id of contact to delete: ";
+          std::cin >> id;
+
+          deleteContact(db, id);
+
+          std::cout << "Contact with ID #"<<id << " has been deleted";
+          break;
+        }
         
         default:
             std::cout << "Exiting the program.\n";
-            return 0;
             break;
         }
 
         std::cout << std::endl;
 
     } while (choice != 5);
-
 }
 
 int main()
@@ -105,14 +116,8 @@ int main()
     }
 
     createTable(database_handle);
-    
-    while (MenuManager(database_handle) != 0)
-    {
-        MenuManager(database_handle);
-    }
-    
+    MenuManager(database_handle);
 
-
-
-    
+    return 0;
 }
+
